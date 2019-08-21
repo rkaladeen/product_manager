@@ -6,5 +6,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'client';
+  title = 'PPM - Project Product Management';
+  tabs: any = [
+    { home: "Home", active: true },
+    { all: "Product List", active: false },
+    { add: "Product Creation", active: false }
+  ]
+
+  setActive(tab_index: number) {
+    this.tabs[tab_index].active = true;
+    for (let i = 0; i < this.tabs.length; i++) {
+      if (i !== tab_index) {
+        this.tabs[i].active = false;
+      }
+    }
+  }
 }
