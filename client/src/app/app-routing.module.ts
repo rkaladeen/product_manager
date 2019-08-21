@@ -14,7 +14,7 @@ const routes: Routes = [
     component: AddProductComponent, 
     data: { 
       title: "Create Product",
-      buttons: {create: "Create", cancel: "Cancel"}
+      buttons: {create: true, cancel: true}
     } 
   },
   
@@ -23,7 +23,7 @@ const routes: Routes = [
     component: AddProductComponent, 
     data: { 
       title: "Edit Product",
-      buttons: {update: "Update", delete: "Delete"}
+      buttons: {update: true, delete: true}
     } 
   }
   // { path: '**', component: PageNotFoundComponent }

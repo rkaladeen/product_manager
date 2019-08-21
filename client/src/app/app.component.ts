@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -6,14 +8,18 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'PPM - Project Product Management';
+  title = 'Project Product Management';
   tabs: any = [
-    { home: "Home", active: true },
-    { all: "Product List", active: false },
-    { add: "Product Creation", active: false }
+    { name: "Home", route: "", active: true },
+    { name: "Product List", route: "products", active: false },
+    { name: "Product Creation", route: "create", active: false }
   ]
 
+  constructor(private route: ActivatedRoute, private router: Router) { }
+
+  
   setActive(tab_index: number) {
+    
     this.tabs[tab_index].active = true;
     for (let i = 0; i < this.tabs.length; i++) {
       if (i !== tab_index) {

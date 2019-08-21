@@ -1,1 +1,20 @@
-<p>all-products works!</p>
+<div class="container">
+  <div class="jumbotron bg-light mt-4 p-3 mx-auto">
+    <h1>{{ title }}</h1>
+    <!-- <p>{{ allProducts | json }}</p> -->
+    <div class="row">
+
+      <div class="card col-lg-3 col-md-4 col-sm-2 h-100" *ngFor="let x of allProducts; index as i">
+        <img class="card-img-top mt-2" src="{{ allProducts[i].img_url }}" alt="{{ allProducts[i].img_url }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ allProducts[i].title }}</h5>
+          <p class="card-text">$ {{ allProducts[i].price }}</p>
+          <a routerLink="/update/{{ allProducts[i]._id }}" class="btn btn-warning btn-sm mr-2">Edit</a>
+          <a (click)="deleteProduct(allProducts[i]._id)" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

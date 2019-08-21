@@ -1,1 +1,57 @@
-<p>add-product works!</p>
+<div class="container">
+  <div class="jumbotron mt-4 p-3 w-50 mx-auto">
+    <h1>{{ title }}</h1>
+    
+    <form>
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" 
+               class="form-control" 
+               id="title" 
+               name="title" 
+               value="{{ currentProduct.title }}"
+               [(ngModel)]="newProduct.title">
+      </div>
+
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input type="text" 
+               class="form-control" 
+               id="price" 
+               name="price" 
+               value="{{ currentProduct.price }}" 
+               [(ngModel)]="newProduct.price">
+      </div>
+
+      <div class="form-group">
+        <label for="img_url">Image URL</label>
+        <input type="text" 
+               class="form-control" 
+               id="img_url" 
+               name="img_url" 
+               value="{{ currentProduct.img_url }}" 
+               [(ngModel)]="newProduct.img_url">
+      </div>
+
+      <div class="form-row">
+        <button class="btn btn-success mr-1"
+                [class.d-inline]="buttons.create" 
+                [class.d-none]="!buttons.create" 
+                (click)="submitProduct()">Create</button>
+        <button class="btn btn-secondary" 
+                [class.d-inline]="buttons.cancel" 
+                [class.d-none]="!buttons.cancel"
+                routerLink="/">Cancel</button>
+        <button class="btn btn-warning mr-1" 
+                [class.d-inline]="buttons.update" 
+                [class.d-none]="!buttons.update"
+                (click)="editProduct()">Update</button>
+        <button class="btn btn-danger" 
+                [class.d-inline]="buttons.delete" 
+                [class.d-none]="!buttons.delete"
+                (click)="deleteProduct()">Delete</button>
+      </div>
+    </form>
+
+  </div>
+</div>
