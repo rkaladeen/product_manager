@@ -1,40 +1,75 @@
 <div class="container">
   <div class="jumbotron mt-4 p-3 w-50 mx-auto">
-    <h1>{{ title }}</h1>
+    <h1>{{ heading }}</h1>
     
-    <form>
+    <form [formGroup]="newProduct">
       <div class="form-group">
-        <label for="title">Title</label>
+        <label>Title</label>
         <input type="text" 
                class="form-control" 
-               id="title" 
-               name="title" 
-               value="{{ currentProduct.title }}"
-               [(ngModel)]="newProduct.title">
+               value="{{ newProduct.value.title }}"
+               formControlName="title"
+               [ngClass]="{'is-invalid':newProduct.get('title').touched && newProduct.get('title').invalid}"
+               />
+      
+        <div class="invalid-feedback" 
+             *ngIf="newProduct.get('title').touched && newProduct.get('title').invalid">
+          
+          <div *ngIf="newProduct.get('title').errors.required">
+            Title is required!
+          </div>
+
+          <div *ngIf="newProduct.get('title').errors.minlength">
+            Title must have more than 5 character
+          </div>
+        </div>
+      </div> <!--End of Title Form Group-->
+
+      <div class="form-group">
+        <label>Price</label>
+        <input type="text" 
+               class="form-control" 
+               value="{{ newProduct.value.price }}"
+               formControlName="price"
+               [ngClass]="{'is-invalid':newProduct.get('price').touched && newProduct.get('price').invalid}"
+               />
+        <div class="invalid-feedback" 
+             *ngIf="newProduct.get('price').touched && newProduct.get('price').invalid">
+
+          <div *ngIf="newProduct.get('price').errors.required">
+            Price is required!
+          </div>
+
+          <div *ngIf="newProduct.get('price').errors.pattern">
+            Price must be in format 19.99
+          </div>
+        </div> <!--End of Price Form Group-->
       </div>
 
       <div class="form-group">
-        <label for="price">Price</label>
+        <label>Image URL</label>
         <input type="text" 
                class="form-control" 
-               id="price" 
-               name="price" 
-               value="{{ currentProduct.price }}" 
-               [(ngModel)]="newProduct.price">
-      </div>
+               value="{{ newProduct.value.img_url }}"
+               formControlName="img_url"
+               [ngClass]="{'is-invalid':newProduct.get('img_url').touched && newProduct.get('img_url').invalid}"
+               />
 
-      <div class="form-group">
-        <label for="img_url">Image URL</label>
-        <input type="text" 
-               class="form-control" 
-               id="img_url" 
-               name="img_url" 
-               value="{{ currentProduct.img_url }}" 
-               [(ngModel)]="newProduct.img_url">
-      </div>
+        <div class="invalid-feedback" 
+             *ngIf="newProduct.get('img_url').touched && newProduct.get('img_url').invalid">
+
+          <div *ngIf="newProduct.get('img_url').errors.required">
+            Image URL is required!
+          </div>
+          <!-- <div class="invalid-feedback" 
+               *ngIf="newProduct.get('img_url').errors.pattern">Image URL must be in format http://image.type
+          </div> -->
+        </div>
+      </div> <!--End of Image URL Form Group-->
 
       <div class="form-row">
         <button class="btn btn-success mr-1"
+                [disabled]="!newProduct.valid"
                 [class.d-inline]="buttons.create" 
                 [class.d-none]="!buttons.create" 
                 (click)="submitProduct()">Create</button>
@@ -42,7 +77,8 @@
                 [class.d-inline]="buttons.cancel" 
                 [class.d-none]="!buttons.cancel"
                 routerLink="/">Cancel</button>
-        <button class="btn btn-warning mr-1" 
+        <button class="btn btn-warning mr-1"
+                [disabled]="!newProduct.valid" 
                 [class.d-inline]="buttons.update" 
                 [class.d-none]="!buttons.update"
                 (click)="editProduct()">Update</button>

@@ -11,72 +11,88 @@ import { ActivatedRoute } from "@angular/router";
 })
 
 export class AddProductComponent implements OnInit {
-  title: string;
+  heading: string;
   buttons: object;
   newProduct: FormGroup;
   currentProduct: any;
-  globalId:any;
+  globalId: any;
   
   constructor(private route: ActivatedRoute, private _http: HttpService, private router: Router) { }
 
   ngOnInit() {
-    this.newProduct = new FormGroup({
-      'title': new FormControl(null, [Validators.required]),
-      'price': new FormControl(null, [Validators.required]),
-      'img_url': new FormControl(null, [Validators.required])
-    })
-
     this.getProdFromUrl();
+    this.newProduct = new FormGroup({
+      _id: new FormControl(''),
+      title: new FormControl('', 
+                            [
+                              Validators.required, 
+                              Validators.minLength(5)
+                            ]),
+      price: new FormControl('', 
+                            [
+                              Validators.required,  
+                              Validators.pattern('^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$')
+                            ]),
+      img_url: new FormControl('', 
+                              [
+                                Validators.required  
+                              ])
+      
+    })
   }
 
   getProdFromUrl() {
     this.route.params.subscribe(prod_id => {
       this.globalId = prod_id;
-      let prodData = this._http.getOne(prod_id.prod_id)
-      prodData.subscribe(data => {
-        this.currentProduct = data;
-        console.log(data);
-      })
+      console.log(prod_id);
+      if (Object.keys(prod_id).length != 0) {
+        console.log("Your are in Update form")
+        let prodData = this._http.getOne(prod_id.prod_id)
+        prodData.subscribe(data => {
+          this.newProduct.setValue({
+            _id: data['_id'],
+            title: data['title'],
+            price: data['price'],
+            img_url: data['img_url']
+          }) 
+          // console.log(data);
+        })
+      }
+
     })
     this.route.data.subscribe(data => {
       this.buttons = data.buttons;
-      this.title = data.title;
+      this.heading = data.title;
       // console.log(data);
     })
   }
 
   submitProduct(): void {
-    let product = {
-      'title': this.newProduct['title'],
-      'price': this.newProduct['price'],
-      'img_url': this.newProduct['img_url']
-    }
-    let ob = this._http.createProduct(product);
+    console.log("Submit Clicked!!!")
+    delete this.newProduct.value._id;
+    console.log(this.newProduct.value);
+    let ob = this._http.createProduct(this.newProduct.value);
     ob.subscribe(data => {
-      // console.log(data);
-      this.router.navigate(['/']);
+      console.log(data);
+      this.router.navigate(['/products']);
     })
   }
 // This may not work
   editProduct(): void {
-    let product = {
-      '_id': this.globalId.prod_id,
-      'title': this.newProduct['title'],
-      'price': this.newProduct['price'],
-      'img_url': this.newProduct['img_url']
-    }
-    let ob = this._http.updateProduct(product);
+    console.log("Edit Clicked!!!")
+    console.log(this.newProduct.value);
+    let ob = this._http.updateProduct(this.newProduct.value);
     ob.subscribe(data => {
       console.log(data);
-      this.router.navigate(['/']);
+      this.router.navigate(['/products']);
     })
   }
 
-  deleteProduct(prod_id: any) {
-    let ob = this._http.deleteProduct(prod_id)
+  deleteProduct() {
+    let ob = this._http.deleteProduct(this.newProduct.value._id)
     ob.subscribe(data => {
       // console.log(data);
-      this.router.navigate(['/']);
+      this.router.navigate(['/products']);
     })
   }
 
