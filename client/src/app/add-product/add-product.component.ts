@@ -16,11 +16,13 @@ export class AddProductComponent implements OnInit {
   newProduct: FormGroup;
   currentProduct: any;
   globalId: any;
+  failedBackEnd: any = false;
+  backEndErrors: any = {};
   
   constructor(private route: ActivatedRoute, private _http: HttpService, private router: Router) { }
 
   ngOnInit() {
-    this.getProdFromUrl();
+    this.getProductFromUrl();
     this.newProduct = new FormGroup({
       _id: new FormControl(''),
       title: new FormControl('', 
@@ -41,21 +43,20 @@ export class AddProductComponent implements OnInit {
     })
   }
 
-  getProdFromUrl() {
+  getProductFromUrl() {
     this.route.params.subscribe(prod_id => {
       this.globalId = prod_id;
-      console.log(prod_id);
       if (Object.keys(prod_id).length != 0) {
-        console.log("Your are in Update form")
         let prodData = this._http.getOne(prod_id.prod_id)
-        prodData.subscribe(data => {
-          this.newProduct.setValue({
-            _id: data['_id'],
-            title: data['title'],
-            price: data['price'],
-            img_url: data['img_url']
-          }) 
-          // console.log(data);
+        prodData.subscribe((data: any) => {
+          if (data.name != "ValidationError") {
+            this.newProduct.setValue({
+              _id: data['_id'],
+              title: data['title'],
+              price: data['price'],
+              img_url: data['img_url']
+            }) 
+          }
         })
       }
 
@@ -63,36 +64,37 @@ export class AddProductComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.buttons = data.buttons;
       this.heading = data.title;
-      // console.log(data);
     })
   }
 
-  submitProduct(): void {
-    console.log("Submit Clicked!!!")
-    delete this.newProduct.value._id;
-    console.log(this.newProduct.value);
-    let ob = this._http.createProduct(this.newProduct.value);
-    ob.subscribe(data => {
-      console.log(data);
+  serverValidator(data: any):void{
+    if (data.name == "ValidationError") {
+      this.backEndErrors = data.errors;
+      this.failedBackEnd = true;
+    } else {
       this.router.navigate(['/products']);
+    }
+  }
+
+  submitProduct(): void {
+    delete this.newProduct.value._id;
+    let ob = this._http.createProduct(this.newProduct.value);
+    ob.subscribe((data: any) => {
+      this.serverValidator(data);
     })
   }
-// This may not work
+
   editProduct(): void {
-    console.log("Edit Clicked!!!")
-    console.log(this.newProduct.value);
     let ob = this._http.updateProduct(this.newProduct.value);
-    ob.subscribe(data => {
-      console.log(data);
-      this.router.navigate(['/products']);
+    ob.subscribe((data: any) => {
+      this.serverValidator(data);
     })
   }
 
   deleteProduct() {
     let ob = this._http.deleteProduct(this.newProduct.value._id)
-    ob.subscribe(data => {
-      // console.log(data);
-      this.router.navigate(['/products']);
+    ob.subscribe((data: any) => {
+      this.serverValidator(data);
     })
   }
 

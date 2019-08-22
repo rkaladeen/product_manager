@@ -14,16 +14,19 @@ export class AllProductsComponent implements OnInit {
   ngOnInit() {
     let ob = this._http.getAll();
     ob.subscribe(data => {
-      console.log(data);
+      // console.log(data);
       this.allProducts = data;
     })
   }
 
   deleteProduct(prod_id: any) {
     let ob = this._http.deleteProduct(prod_id)
-    ob.subscribe(data => {
+    ob.subscribe((data: any) => {
       console.log(data);
-      this.ngOnInit();
+      if (!data.error) {
+        this.ngOnInit();
+      }
+      //Else - Add Component that renders server validation Error
     })
   }
 

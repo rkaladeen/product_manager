@@ -61,9 +61,7 @@
           <div *ngIf="newProduct.get('img_url').errors.required">
             Image URL is required!
           </div>
-          <!-- <div class="invalid-feedback" 
-               *ngIf="newProduct.get('img_url').errors.pattern">Image URL must be in format http://image.type
-          </div> -->
+          
         </div>
       </div> <!--End of Image URL Form Group-->
 
@@ -87,6 +85,14 @@
                 [class.d-none]="!buttons.delete"
                 (click)="deleteProduct()">Delete</button>
       </div>
+
+      <div class="invalid-feedback d-block" *ngIf="failedBackEnd">
+
+          <div *ngFor="let error of backEndErrors | keyvalue">
+            Server Errors: {{ error.value.message }}
+          </div>
+          
+        </div>
     </form>
 
   </div>

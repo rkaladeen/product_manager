@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { ActivatedRoute } from "@angular/router";
 
@@ -17,6 +17,11 @@ export class AppComponent {
 
   constructor(private route: ActivatedRoute, private router: Router) { }
 
+  ngOnInIt() {
+    this.route.url.subscribe(url => {
+      console.log(url);
+    })
+  }
   
   setActive(tab_index: number) {
     
