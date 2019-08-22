@@ -8,7 +8,9 @@ import { HttpService } from '../http.service';
 })
 export class AllProductsComponent implements OnInit {
   title: string = "Products List"
-  allProducts: any;
+  allProducts: any = [];
+  filter: any = [];
+  searchVal: string = "";
   constructor(private _http: HttpService) { }
 
   ngOnInit() {
@@ -16,6 +18,7 @@ export class AllProductsComponent implements OnInit {
     ob.subscribe(data => {
       // console.log(data);
       this.allProducts = data;
+      this.filter = data;
     })
   }
 
@@ -26,8 +29,17 @@ export class AllProductsComponent implements OnInit {
       if (!data.error) {
         this.ngOnInit();
       }
-      //Else - Add Component that renders server validation Error
     })
+  }
+
+  search(event) {
+    let temp = [];
+    for (let product of this.allProducts) {
+      if (product.title.toLowerCase().includes(event.toLowerCase())) {
+        temp.push(product)
+      }
+    }
+    this.filter = temp;
   }
 
 }

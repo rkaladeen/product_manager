@@ -14,12 +14,14 @@ export class AddProductComponent implements OnInit {
   heading: string;
   buttons: object;
   newProduct: FormGroup;
-  currentProduct: any;
+  currentProduct: any = [];
   globalId: any;
   failedBackEnd: any = false;
   backEndErrors: any = {};
   
-  constructor(private route: ActivatedRoute, private _http: HttpService, private router: Router) { }
+  constructor(private _route: ActivatedRoute, 
+              private _http: HttpService, 
+              private _router: Router) { }
 
   ngOnInit() {
     this.getProductFromUrl();
@@ -44,7 +46,7 @@ export class AddProductComponent implements OnInit {
   }
 
   getProductFromUrl() {
-    this.route.params.subscribe(prod_id => {
+    this._route.params.subscribe(prod_id => {
       this.globalId = prod_id;
       if (Object.keys(prod_id).length != 0) {
         let prodData = this._http.getOne(prod_id.prod_id)
@@ -61,7 +63,7 @@ export class AddProductComponent implements OnInit {
       }
 
     })
-    this.route.data.subscribe(data => {
+    this._route.data.subscribe(data => {
       this.buttons = data.buttons;
       this.heading = data.title;
     })
@@ -72,7 +74,7 @@ export class AddProductComponent implements OnInit {
       this.backEndErrors = data.errors;
       this.failedBackEnd = true;
     } else {
-      this.router.navigate(['/products']);
+      this._router.navigate(['/products']);
     }
   }
 

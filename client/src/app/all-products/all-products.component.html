@@ -1,20 +1,33 @@
 <div class="container">
+  
   <div class="jumbotron bg-light mt-4 p-3 mx-auto">
-    <h1>{{ title }}</h1>
-    <!-- <p>{{ allProducts | json }}</p> -->
+    <div class="row">
+
+      <h1 class="col-sm ml-auto">{{ title }}</h1>
+      <div class="col-lg-3 col-md-4 col-sm-6 mr-auto">
+        <input class="form-control mr-sm-2"
+               [(ngModel)]="searchVal"
+               (ngModelChange)="search($event)" 
+               type="search" 
+               name="searchVal" 
+               placeholder="Search" 
+               aria-label="Search">
+      </div>
+    </div>
+    
 
     <div class="row">
       <div class="card border-0 bg-light col-lg-3 col-md-4 col-sm-6" 
-           *ngFor="let x of allProducts; index as i">
-        <img class="card-img-top mt-2" src="{{ allProducts[i].img_url }}" alt="{{ allProducts[i].img_url }}">
+           *ngFor="let product of filter">
+        <img class="card-img-top mt-2" src="{{ product.img_url }}" alt="{{ product.img_url }}">
         <div class="card-body bg-dark text-light">
-          <h5 class="card-title">{{ allProducts[i].title }}</h5>
-          <p class="card-text">$ {{ allProducts[i].price }}</p>
-          <a routerLink="/update/{{ allProducts[i]._id }}" 
+          <h5 class="card-title">{{ product.title }}</h5>
+          <p class="card-text">$ {{ product.price }}</p>
+          <a routerLink="/update/{{ product._id }}" 
              class="btn btn-warning btn-sm mr-2">
              Edit
           </a>
-          <a (click)="deleteProduct(allProducts[i]._id)" 
+          <a (click)="deleteProduct(product._id)" 
              class="btn btn-danger btn-sm">
              Delete
           </a>
