@@ -4,10 +4,10 @@
     <!-- <p>{{ allProducts | json }}</p> -->
 
     <div class="row">
-      <div class="card col-lg-3 col-md-4 col-sm-6 h-100" 
+      <div class="card border-0 bg-light col-lg-3 col-md-4 col-sm-6" 
            *ngFor="let x of allProducts; index as i">
         <img class="card-img-top mt-2" src="{{ allProducts[i].img_url }}" alt="{{ allProducts[i].img_url }}">
-        <div class="card-body">
+        <div class="card-body bg-dark text-light">
           <h5 class="card-title">{{ allProducts[i].title }}</h5>
           <p class="card-text">$ {{ allProducts[i].price }}</p>
           <a routerLink="/update/{{ allProducts[i]._id }}" 

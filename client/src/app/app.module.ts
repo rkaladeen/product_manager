@@ -10,13 +10,15 @@ import { AllProductsComponent } from './all-products/all-products.component';
 import { AddProductComponent } from './add-product/add-product.component';
 
 import { HttpService } from './http.service';
+import { NavComponent } from './nav/nav.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     AllProductsComponent,
-    AddProductComponent
+    AddProductComponent,
+    NavComponent
   ],
   imports: [
     BrowserModule,
